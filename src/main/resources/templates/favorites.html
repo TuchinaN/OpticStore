@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/fav.png" type="image/x-icon">
+    <title>Избранное</title>
+    <link th:href="@{css/style.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:insert="blocks/general.html :: header">
+</div>
+
+<p class="cartlist">Избранное:</p>
+<div class="fav_container">
+    <div th:each="favorite : ${favorites}" class="item_card">
+        <img th:src="${productService.getItemById(favorite.getItemId()).getCoverLink()}" onerror="this.src='img/no-cover.gif'" height="300px" width="200px">
+        <p th:text="${productService.getItemById(favorite.getItemId()).getItemName()}"/>
+        <form th:method="POST" th:action="@{/favoritesDeleteAdd}">
+            <button name="delButton" th:value="${favorite.getId}">X</button>
+        </form>
+        <p th:text="'Цена: '+${productService.getItemById(favorite.getItemId()).price}+'р'"/>
+        <p>Выберите параметры:</p>
+        <form th:method="POST" th:action="@{/page/{id}(id=${productService.getItemById(favorite.getItemId()).id})}">
+            <select th:if="(${productService.getItemById(favorite.getItemId()).typeId}==1)"  name="itemParameters">
+                <option value="-4.5">-4.5</option>
+                <option value="-3.75">-3.75</option>
+                <option value="-3.0">-3.0</option>
+                <option value="-1.5">-1.5</option>
+                <option value="+1.5">+1.5</option>
+                <option value="+3.25">+3.25</option>
+                <option value="+5.0">+5.0</option>
+            </select>
+            <select th:if="(${productService.getItemById(favorite.getItemId()).typeId}==2)"  name="itemParameters">
+                <option value="-4.5">-4.5</option>
+                <option value="-3.75">-3.75</option>
+                <option value="-3.0">-3.0</option>
+                <option value="-1.5">-1.5</option>
+                <option value="+1.5">+1.5</option>
+                <option value="+3.25">+3.25</option>
+                <option value="+5.0">+5.0</option>
+            </select>
+            <select th:if="(${productService.getItemById(favorite.getItemId()).typeId}==3)"  name="itemParameters">
+                <option value="0">Нет параметров</option>
+            </select>
+            <select th:if="${productService.getItemById(favorite.getItemId()).typeId}==4"  name="itemParameters">
+                <option value="0">Нет параметров</option>
+            </select>
+            <select th:if="(${productService.getItemById(favorite.getItemId()).typeId}==5)"  name="itemParameters">
+                <option value="0">Нет параметров</option>
+            </select>
+            <button type="submit">Добавить в корзину</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

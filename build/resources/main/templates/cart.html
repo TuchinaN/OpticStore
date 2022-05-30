@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/fav.png" type="image/x-icon">
+    <title>Корзина</title>
+    <link th:href="@{css/style.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:insert="blocks/general.html :: header">
+</div>
+<p class="cartlist">Корзина:</p>
+<div class="cart_container">
+    <div th:each="purchase : ${cart}" class="cart_card">
+        <div class="cart_buttons">
+            <form th:method="POST" th:action="@{/cartIncrPurchase}">
+                <button name="incrButton" th:value="${purchase.getId}">+</button>
+            </form>
+            <form th:method="POST" th:action="@{/cartDecrPurchase}">
+                <button name="decrButton" th:value="${purchase.getId}">-</button>
+            </form>
+            <form th:method="POST" th:action="@{/cartDeletePurchase}">
+                <button name="delButton" th:value="${purchase.getId}">X</button>
+            </form>
+        </div>
+        <img th:src="${productService.getItemById(purchase.getItemId()).getCoverLink()}" onerror="this.src='img/no-cover.gif'" height="300px" width="200px">
+        <p th:text="${productService.getItemById(purchase.getItemId()).getItemName()}"/>
+        <p th:text="'Количество: ' + ${purchase.getItemCount()}"/>
+        <p th:unless="${purchase.getItemParameters()}==0" th:text="'Параметры: ' + ${purchase.getItemParameters()}"/>
+        <p th:text="'Цена: ' + ${productService.getItemById(purchase.getItemId()).getPrice()}"/>
+
+    </div>
+    <p th:text="'СУММА ЗАКАЗА: ' + ${cartPrice} + 'р'" class="cartlist"></p>
+    <form th:action="@{/}">
+        <CENTER><input type="submit" value="Оформить заказ"/></CENTER>
+    </form>
+</div>
+</body>
+</html>

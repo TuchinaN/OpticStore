@@ -1,0 +1,21 @@
+
+<header th:fragment="header">
+    <a th:href="@{/}"><img src="img/logo.jpg" alt="logo" width="70px" height="70px"></a>
+    <nav>
+        <form th:if="(${authority}=='[ADMIN]')" th:action="@{/add}">
+            <input type="submit" value="Добавить вещь"/>
+        </form>
+        <form th:action="@{/}">
+            <input type="submit" value="Каталог"/>
+        </form>
+        <form th:unless="(${authority}=='[ADMIN]')" th:action="@{/favorites}">
+            <input type="submit" value="Избранное"/>
+        </form>
+        <form th:unless="(${authority}=='[ADMIN]')" th:action="@{/cart}">
+            <input type="submit" value="Корзина"/>
+        </form>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Выйти"/>
+        </form>
+    </nav>
+</header>
